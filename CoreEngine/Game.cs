@@ -14,7 +14,7 @@ namespace CoreEngine
 
         private readonly ConcurrentQueue<Action> tasks = new ConcurrentQueue<Action>();
         private GameThread gameThread;
-
+        
         public int Width { get; private set; } = 800;
         public int Height { get; private set; } = 450;
 
@@ -73,9 +73,8 @@ namespace CoreEngine
                         this.gameThread.ScheduleAndWait(() =>
                         {
                             this.SizeChanged(sdlEvent->window.data1, sdlEvent->window.data2);
-                            this.Render();
-
                             
+                            this.Render();
                             SDL_GL_SwapWindow(this.Window.Handle);
                         });
                     }

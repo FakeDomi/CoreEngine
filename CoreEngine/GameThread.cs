@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Threading;
 using static CoreEngine.SDL2.SDL;
 
@@ -14,6 +15,8 @@ namespace CoreEngine
         private readonly Thread thread;
 
         private bool shouldTick;
+
+        private readonly Stopwatch sw = Stopwatch.StartNew();
 
         internal GameThread(Game game)
         {
@@ -54,9 +57,11 @@ namespace CoreEngine
                 if (this.shouldTick)
                 {
                     this.game.Update();
-                    this.game.Render();
 
+                    this.game.Render();
                     SDL_GL_SwapWindow(this.game.Window.Handle);
+
+                    //add timing unit
                 }
             }
         }

@@ -39,8 +39,8 @@ namespace CoreEngine
             glTexImage2D(GLenum.GL_TEXTURE_2D, 0, (int)GLenum.GL_RGBA, width, height, 0, GLenum.GL_RGBA,
                 GLenum.GL_UNSIGNED_BYTE, data);
 
-            glTexParameteri(GLenum.GL_TEXTURE_2D, GLenum.GL_TEXTURE_MIN_FILTER, (int)GLenum.GL_LINEAR);
-            glTexParameteri(GLenum.GL_TEXTURE_2D, GLenum.GL_TEXTURE_MAG_FILTER, (int)GLenum.GL_LINEAR);
+            glTexParameteri(GLenum.GL_TEXTURE_2D, GLenum.GL_TEXTURE_MIN_FILTER, (int)GLenum.GL_NEAREST);
+            glTexParameteri(GLenum.GL_TEXTURE_2D, GLenum.GL_TEXTURE_MAG_FILTER, (int)GLenum.GL_NEAREST);
 
             return t;
         }
@@ -63,6 +63,28 @@ namespace CoreEngine
             glVertex2f(x + width, y + height);
             glTexCoord2f(0f, 1f);
             glVertex2f(x, y + height);
+        }
+
+        public void DrawAt(Rectangle rect)
+        {
+            float x = rect.X;
+            float y = rect.Y;
+            float x2 = x + rect.W;
+            float y2 = y + rect.H;
+
+            glTexCoord2f(0f, 0f);
+            glVertex2f(x, y);
+            glTexCoord2f(1f, 0f);
+            glVertex2f(x2, y);
+            glTexCoord2f(0f, 1f);
+            glVertex2f(x, y2);
+            
+            glTexCoord2f(1f, 0f);
+            glVertex2f(x2, y);
+            glTexCoord2f(1, 1f);
+            glVertex2f(x2, y2);
+            glTexCoord2f(0f, 1f);
+            glVertex2f(x, y2);
         }
 
         public void Dispose()

@@ -62,6 +62,14 @@ namespace CoreEngine
         public delegate void GlScalef(float x, float y, float z);
         public static GlScalef glScalef;
 
+
+
+        public delegate uint GlCreateShader(GLenum shaderType);
+		public static GlCreateShader glCreateShader;
+
+        public delegate void GlShaderSource(uint shader, int count, in string @string, in int length);
+		public static GlShaderSource glShaderSource;
+
 #pragma warning restore 0649
 
         static GL()
@@ -274,7 +282,10 @@ namespace CoreEngine
 			GL_DEBUG_SEVERITY_HIGH =		0x9146,
 			GL_DEBUG_SEVERITY_MEDIUM =		0x9147,
 			GL_DEBUG_SEVERITY_LOW =			0x9148,
-			GL_DEBUG_SEVERITY_NOTIFICATION =	0x826B
+			GL_DEBUG_SEVERITY_NOTIFICATION =	0x826B,
+            
+            GL_FRAGMENT_SHADER = 0x8B30,
+            GL_VERTEX_SHADER = 0x8B31
 		}
     }
 }
