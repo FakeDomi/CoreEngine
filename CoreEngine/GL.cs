@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 using CoreEngine.SDL2;
 
 // ReSharper disable IdentifierTypo, InconsistentNaming
@@ -8,6 +9,8 @@ namespace CoreEngine
 {
     public class GL
     {
+        public const int GL_FALSE = 0;
+        public const int GL_TRUE = 1;
 
 #pragma warning disable 0649
 
@@ -62,6 +65,39 @@ namespace CoreEngine
         public delegate void GlScalef(float x, float y, float z);
         public static GlScalef glScalef;
 
+        public delegate void GlColor4f(float red, float green, float blue, float alpha);
+		public static GlColor4f glColor4f;
+
+
+
+
+        public delegate uint GlCreateProgram();
+        public static GlCreateProgram glCreateProgram;
+
+        public delegate void GlAttachShader(uint program, uint shader);
+		public static GlAttachShader glAttachShader;
+
+        public delegate void GlLinkProgram(uint program);
+        public static GlLinkProgram glLinkProgram;
+
+        public delegate void GlUseProgram(uint program);
+		public static GlUseProgram glUseProgram;
+
+        public delegate void GlGetProgramiv(uint program, GLenum pname, out int @params);
+		public static GlGetProgramiv glGetProgramiv;
+
+		public delegate void GlGetActiveAttrib(uint program, uint index, int bufSize, out int length, out int size, out GLenum type, StringBuilder name);
+		public static GlGetActiveAttrib glGetActiveAttrib;
+
+        public delegate int GlGetAttribLocation(uint program, StringBuilder name);
+		public static GlGetAttribLocation glGetAttribLocation;
+
+		public delegate void GlGetActiveUniform(uint program, uint index, int bufSize, out int length, out int size, out GLenum type, StringBuilder name);
+		public static GlGetActiveUniform glGetActiveUniform;
+
+        public delegate int GlGetUniformLocation(uint program, StringBuilder name);
+        public static GlGetUniformLocation glGetUniformLocation;
+
 
 
         public delegate uint GlCreateShader(GLenum shaderType);
@@ -70,12 +106,68 @@ namespace CoreEngine
         public delegate void GlShaderSource(uint shader, int count, in string @string, in int length);
 		public static GlShaderSource glShaderSource;
 
+		public delegate void GlCompileShader(uint shader);
+        public static GlCompileShader glCompileShader;
+
+        public delegate void GlGetShaderiv(uint shader, GLenum pname, out int @params);
+        public static GlGetShaderiv glGetShaderiv;
+
+        public delegate void GlGetShaderInfoLog(uint shader, int maxLength, out int length, StringBuilder infoLog);
+        public static GlGetShaderInfoLog glGetShaderInfoLog;
+
+        public delegate void GlBindAttribLocation(uint program, uint index, string name);
+        public static GlBindAttribLocation glBindAttribLocation;
+
+
+
+
+        public delegate void GlUniform4f(int location, float v0, float v1, float v2, float v3);
+		public static GlUniform4f glUniform4f;
+
+
+
+        public delegate void GlGenBuffers(int n, out uint buffers);
+        public static GlGenBuffers glGenBuffers;
+
+        public delegate void GlBindBuffer(GLenum target, uint buffer);
+        public static GlBindBuffer glBindBuffer;
+
+        public delegate void GlBufferData(GLenum target, IntPtr size, IntPtr data, GLenum usage);
+        public static GlBufferData glBufferData;
+
+
+        public delegate void GlVertexAttribPointer(uint index, int size, GLenum type, bool normalized, int stride, IntPtr pointer);
+        public static GlVertexAttribPointer glVertexAttribPointer;
+
+        public delegate void GlEnableVertexAttribArray(uint index);
+        public static GlEnableVertexAttribArray glEnableVertexAttribArray;
+
+        public delegate void GlGenVertexArrays(int n, out uint arrays);
+        public static GlGenVertexArrays glGenVertexArrays;
+
+        public delegate void GlBindVertexArray(uint array);
+        public static GlBindVertexArray glBindVertexArray;
+        
+        public delegate void GlDrawArrays(GLenum mode, int first, int count);
+        public static GlDrawArrays glDrawArrays;
+
+        public delegate void GlDrawElements(GLenum mode, int count, GLenum type, IntPtr indices);
+        public static GlDrawElements glDrawElements;
+
+        public delegate void GlPolygonMode(GLenum face, GLenum mode);
+        public static GlPolygonMode glPolygonMode;
+
 #pragma warning restore 0649
 
         static GL()
         {
             foreach (FieldInfo field in typeof(GL).GetFields(BindingFlags.Static | BindingFlags.Public))
             {
+                if (field.IsLiteral)
+                {
+					continue;
+                }
+
                 IntPtr address = SDL.SDL_GL_GetProcAddress(field.Name);
 
                 if (address == IntPtr.Zero)
@@ -285,7 +377,23 @@ namespace CoreEngine
 			GL_DEBUG_SEVERITY_NOTIFICATION =	0x826B,
             
             GL_FRAGMENT_SHADER = 0x8B30,
-            GL_VERTEX_SHADER = 0x8B31
+            GL_VERTEX_SHADER = 0x8B31,
+
+
+			// Shader param names
+            GL_SHADER_TYPE = 0x8B4F,
+            GL_DELETE_STATUS = 0x8B80,
+            GL_COMPILE_STATUS = 0x8B81,
+			GL_INFO_LOG_LENGTH = 0x8B84,
+            GL_SHADER_SOURCE_LENGTH = 0x8B88,
+
+			// Program param names
+            GL_LINK_STATUS = 0x8B82,
+            GL_VALIDATE_STATUS = 0x8B83,
+            GL_ATTACHED_SHADERS = 0x8B85,
+            GL_ACTIVE_ATTRIBUTES = 0x8B89,
+            GL_ACTIVE_UNIFORMS = 0x8B86
+
 		}
     }
 }

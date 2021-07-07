@@ -20,6 +20,13 @@ namespace CoreEngine
 
         public GameWindow Window { get; private set; }
 
+        public virtual void EnableGlFeatures()
+        {            
+            glEnable(GLenum.GL_TEXTURE_2D);
+            glEnable(GLenum.GL_BLEND);
+            glBlendFunc(GLenum.GL_SRC_ALPHA, GLenum.GL_ONE_MINUS_SRC_ALPHA);
+        }
+
         public virtual void Initialize()
         {
         }
@@ -43,8 +50,13 @@ namespace CoreEngine
             this.gameThread = new GameThread(this);
             this.gameThread.ScheduleAndWait(() =>
             {
+                SDL_GL_SetAttribute(SDL_GLattr.SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+                SDL_GL_SetAttribute(SDL_GLattr.SDL_GL_CONTEXT_MINOR_VERSION, 3);
+                SDL_GL_SetAttribute(SDL_GLattr.SDL_GL_CONTEXT_PROFILE_MASK, SDL_GLprofile.SDL_GL_CONTEXT_PROFILE_CORE);
+
                 SDL_GL_CreateContext(this.Window.Handle);
                 this.SizeChanged(this.Width, this.Height);
+                this.EnableGlFeatures();
                 this.Initialize();
             });
 

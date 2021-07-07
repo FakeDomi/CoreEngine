@@ -45,46 +45,9 @@ namespace CoreEngine
             return t;
         }
 
-        public void DrawAt(float x, float y, float scale = 1f)
+        public void Bind()
         {
-            float width = this.Width * scale;
-            float height = this.Height * scale;
-
-            glTexCoord2f(0f, 0f);
-            glVertex2f(x, y);
-            glTexCoord2f(1f, 0f);
-            glVertex2f(x + width, y);
-            glTexCoord2f(0f, 1f);
-            glVertex2f(x, y + height);
-            
-            glTexCoord2f(1f, 0f);
-            glVertex2f(x + width, y);
-            glTexCoord2f(1, 1f);
-            glVertex2f(x + width, y + height);
-            glTexCoord2f(0f, 1f);
-            glVertex2f(x, y + height);
-        }
-
-        public void DrawAt(Rectangle rect)
-        {
-            float x = rect.X;
-            float y = rect.Y;
-            float x2 = x + rect.W;
-            float y2 = y + rect.H;
-
-            glTexCoord2f(0f, 0f);
-            glVertex2f(x, y);
-            glTexCoord2f(1f, 0f);
-            glVertex2f(x2, y);
-            glTexCoord2f(0f, 1f);
-            glVertex2f(x, y2);
-            
-            glTexCoord2f(1f, 0f);
-            glVertex2f(x2, y);
-            glTexCoord2f(1, 1f);
-            glVertex2f(x2, y2);
-            glTexCoord2f(0f, 1f);
-            glVertex2f(x, y2);
+            glBindTexture(GLenum.GL_TEXTURE_2D, this.name);
         }
 
         public void Dispose()
